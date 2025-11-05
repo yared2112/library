@@ -1,3 +1,5 @@
+// eslint.config.mjs
+
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
@@ -7,30 +9,38 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
-    // Here you can specify additional configurations or overrides
+    // Additional configurations or overrides
     parser: '@typescript-eslint/parser',
     parserOptions: {
-      ecmaVersion: 2020, // Ensure you use the latest ECMAScript
+      ecmaVersion: 2020, // Specify ECMAScript version
       sourceType: 'module', // Allows for the use of imports
       ecmaFeatures: {
-        jsx: true, // Enables the parsing of JSX
+        jsx: true, // Enables JSX parsing
       },
     },
     settings: {
       react: {
-        version: "detect", // Automatically picks the React version
+        version: "detect", // Automatically detect React version
       },
     },
     rules: {
-      // Your custom rules go here
+      // Your custom rules here
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'react/react-in-jsx-scope': 'off', // Not needed in Next.js
-      'react/prop-types': 'off', // Disable prop-types as you are using TypeScript
+      'react/prop-types': 'off', // Disable prop-types since you are using TypeScript
+      'prettier/prettier': 'error', // Enable Prettier errors as ESLint errors
     },
+    overrides: [
+      {
+        files: ['/*.ts', '/*.tsx'], // Apply specific rules to TypeScript files
+        rules: {
+          // TypeScript-specific rules can go here
+        },
+      },
+    ],
   },
-  // Override default ignores of eslint-config-next.
+  // Override default ignores of eslint-config-next
   globalIgnores([
-    // Default ignores of eslint-config-next:
     ".next/",
     "out/",
     "build/**",
